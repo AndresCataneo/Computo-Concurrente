@@ -10,7 +10,7 @@ public class DeterminanteSecuencial {
     public static int determinante(int [][] matriz){
 
         //variables auxiliares:
-        int diag1,diag2,diag3,diag4,diag5,diag6,temp1,temp2; 
+        int diag1,diag2,diag3,diag4,diag5,diag6; 
         
         //multiplicaciones de cada diagonal.
         diag1=matriz[0][0]* matriz[1][1]* matriz[2][2];
