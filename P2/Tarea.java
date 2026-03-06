@@ -1,4 +1,4 @@
-package practica02;
+package P2;
 
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Lock;
