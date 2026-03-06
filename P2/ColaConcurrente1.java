@@ -25,52 +25,48 @@ public class ColaConcurrente1 {
         List<Future<String>> futures = new ArrayList<Future<String>>();
 
         //Necesitamos declarar la pool de hilos (en este caso sera de 4 hilos).
-        ExecutorService pool = Executors.newFixedThreadPool(4);
+        ExecutorService pool = Executors.newFixedThreadPool(8);
 
         //Realizaremos un bucle for para anexar algunos items a la cola.
-        for (int i = 0; i <= 20; i++){
+        for (int i = 0; i <= 1000; i++){
             String val=Integer.toString(i);
             //en esta parte los hilos intenetaran encolar al mismo tiempo.
             pool.submit(()->cola.enq(val));
-            //En esta parte los hilos van a desencolar si el elemento ingresado es par.
-            if (i%2==0){
-                futures.add(pool.submit(()->cola.deq()));    
-            }            
         }
 
         try{
-			Thread.sleep(1800);// Delay para esperar que todas las tareas terminen
+			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
 
-        //Mostramos en terminal como quedo la cola despues de enq 
-        cola.print();
+        //Realizaremos un bucle for para anexar algunos items a la cola.
+        for (int i = 0; i <= 1000; i++){
+            futures.add(pool.submit(()->cola.deq()));    
+        }
 
         //Hacemos shutdown a la pool pues ya no la ocuparemos.
         pool.shutdown();
 
         //Utilizaremos Future para saber si se hicieron varios deq al mismo elemento.
         try{	
-            System.out.println("Prints para verificar si borro 2 veces o mas un elemento");
-            //Utiliaremos un buvle para recorrer la lista de futuros		
+            
+            //Utiliaremos un bucle para recorrer la lista de futuros		
 			for (int i = 0; i < futures.size(); i++) {
                 //Si la tarea aun no ha terminado obligaremos a esperar a que termine.
 	            while(!futures.get(i).isDone());
                 //Obtenemos el elemento que 'elimino' de la cola.
 	            String result = futures.get(i).get();
-	            System.out.printf("\n Result: "+result);
+	            System.out.println(" Result: "+result);
         }
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
-        
+         
         try{
-			Thread.sleep(1800);// Delay para esperar que todas las tareas terminen
+			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
-
-       
     }    
 }
