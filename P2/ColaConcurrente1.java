@@ -10,21 +10,11 @@ import java.util.concurrent.Future;
  * 
  * Clase ColaConcurrente
  * 
- * Clase diseñada para resolver una cola de manera concurrente sin utilizar candados 
+ * Clase diseñada para implementar una cola de manera concurrente sin utilizar Lock
  * y tampoco Syncronized.
  * 
  */
 public class ColaConcurrente1 extends ColaSecuencial {
-
-    /**
-     * {@link ColaSecuencial} que sera usada para almacenar los elementos tratados concurrentemente
-     */
-    private ColaSecuencial cola;
-    /** @return {@link ColaSecuencial} que almacena elementos */
-    public ColaSecuencial getCola() {
-        return cola;
-    }
-
 
     /**
      * {@link List}a de {@link Future}s que seran usados para esperar el fin de la ejecucion concurrente
@@ -38,8 +28,7 @@ public class ColaConcurrente1 extends ColaSecuencial {
 
 
     /**
-     * {@link @ExecutorService} pool de hilos previamente apartados para su uso concurrente.
-     */
+     * {@link @ExecutorService} pool de hilos previamente apartados para su uso concurrente. */
     private ExecutorService threadPool;
     /** @return {@link ExecutorService} los hilos en espera de ejecucion */
     public ExecutorService getPool() {
@@ -56,7 +45,6 @@ public class ColaConcurrente1 extends ColaSecuencial {
      * Se asegura que tenga cuanto menos un hilo asignado
      */
     public ColaConcurrente1( int threads ){
-        this.cola = new ColaSecuencial();
         this.futures = new ArrayList<>();
         this.threadPool = (threads<2)? //
             Executors.newSingleThreadExecutor() :
@@ -121,7 +109,5 @@ public class ColaConcurrente1 extends ColaSecuencial {
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
-
-       
-    }    
+    }
 }
