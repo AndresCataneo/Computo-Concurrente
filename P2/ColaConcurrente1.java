@@ -21,7 +21,7 @@ public class ColaConcurrente1 extends ColaSecuencial {
      * para reportar sus resultados de tipo {@link String}
      */
     private List<Future<String>> futures;
-    /** @return {@link List} que espera resultados de los hilos en ejecucion */
+    /** @return {@link List}a que espera resultados de los hilos en ejecucion */
     public List<Future<String>> getFutures() {
         return futures;
     }
@@ -46,7 +46,7 @@ public class ColaConcurrente1 extends ColaSecuencial {
      */
     public ColaConcurrente1( int threads ){
         this.futures = new ArrayList<>();
-        this.threadPool = (threads<2)? //
+        this.threadPool = (threads<2)?
             Executors.newSingleThreadExecutor() :
             Executors.newFixedThreadPool(threads) ;
     }
@@ -54,49 +54,37 @@ public class ColaConcurrente1 extends ColaSecuencial {
     public static void main(String[] args){
 
         ColaConcurrente1 cola = new ColaConcurrente1();
-        
-        //Declaramos la cola que utilizaran los hilos.
-        //ColaSecuencial cola = new ColaSecuencial(); --remove
-
-        //Lista para poder guardar los resultados de los submit.
-        //List<Future<String>> futures = new ArrayList<Future<String>>(); --remove
-
-        //Necesitamos declarar la pool de hilos (en este caso sera de 4 hilos).
-        // ExecutorService pool = Executors.newFixedThreadPool(4); --remove
-
+    
         //Realizaremos un bucle for para anexar algunos items a la cola.
-        for (int i = 0; i <= 20; i++){
+        for (int i = 0; i <= 1000; i++){
             String val=Integer.toString(i);
             //en esta parte los hilos intenetaran encolar al mismo tiempo.
-            cola.getPool().submit( ()->cola.enq(val) );
-            //En esta parte los hilos van a desencolar si el elemento ingresado es par.
-            if ( i%2==0 ){
-                cola.getFutures().add(cola.getPool().submit(()->cola.deq()));    
-            }
+            cola.getPool().submit(()->cola.enq(val));
         }
 
         try{
-			Thread.sleep(1800);// Delay para esperar que todas las tareas terminen
+			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
 
-        //Mostramos en terminal como quedo la cola despues de enq 
-        cola.print();
+        //Realizaremos un bucle for para eliminar algunos items a la cola.
+        for (int i = 0; i <= 1000; i++){
+            cola.getFutures().add(cola.getPool().submit(()->cola.deq()));    
+        }
 
         //Hacemos shutdown a la pool pues ya no la ocuparemos.
         cola.getPool().shutdown();
 
-        //Utilizaremos Future para saber si se hicieron varios deq al mismo elemento.
+        //Utilizaremos Future para saber si se hicieron varios deq al mismo elemento o se hicieron a una cola vacia.
         try{	
-            System.out.println("Prints para verificar si borro 2 veces o mas un elemento");
-            //Utiliaremos un buvle para recorrer la lista de futuros		
+            //Utiliaremos un bucle para recorrer la lista de futuros		
 			for (int i = 0; i < cola.getFutures().size(); i++) {
                 //Si la tarea aun no ha terminado obligaremos a esperar a que termine.
 	            while(!cola.getFutures().get(i).isDone());
                 //Obtenemos el elemento que 'elimino' de la cola.
 	            String result = cola.getFutures().get(i).get();
-	            System.out.printf("\n Result: "+result);
+	            System.out.println(" Result: "+result);
         }
 		}catch(InterruptedException e) {
 			System.out.println(e);
@@ -105,7 +93,7 @@ public class ColaConcurrente1 extends ColaSecuencial {
         }
         
         try{
-			Thread.sleep(1800);// Delay para esperar que todas las tareas terminen
+			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
 		}catch(InterruptedException e) {
 			System.out.println(e);
 		}
