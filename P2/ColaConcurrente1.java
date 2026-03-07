@@ -63,10 +63,10 @@ public class ColaConcurrente1 extends ColaSecuencial {
         }
 
         try{
-			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
-		}catch(InterruptedException e) {
-			System.out.println(e);
-		}
+            Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
+        }catch(InterruptedException e) {
+            System.out.println(e);
+        }
 
         //Realizaremos un bucle for para eliminar algunos items a la cola.
         for (int i = 0; i <= 1000; i++){
@@ -79,23 +79,23 @@ public class ColaConcurrente1 extends ColaSecuencial {
         //Utilizaremos Future para saber si se hicieron varios deq al mismo elemento o se hicieron a una cola vacia.
         try{	
             //Utiliaremos un bucle para recorrer la lista de futuros		
-			for (int i = 0; i < cola.getFutures().size(); i++) {
+            for (int i = 0; i < cola.getFutures().size(); i++) {
                 //Si la tarea aun no ha terminado obligaremos a esperar a que termine.
-	            while(!cola.getFutures().get(i).isDone());
+                while(!cola.getFutures().get(i).isDone());
                 //Obtenemos el elemento que 'elimino' de la cola.
-	            String result = cola.getFutures().get(i).get();
-	            System.out.println(" Result: "+result);
+                String result = cola.getFutures().get(i).get();
+                System.out.println(" Result: "+result);
         }
-		}catch(InterruptedException e) {
-			System.out.println(e);
-		}catch(ExecutionException e){
+    }catch(InterruptedException e) {
+            System.out.println(e);
+        }catch(ExecutionException e){
             System.out.println(e);
         }
         
         try{
-			Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
-		}catch(InterruptedException e) {
-			System.out.println(e);
-		}
+            Thread.sleep(1000);// Delay para esperar que todas las tareas terminen
+        }catch(InterruptedException e) {
+            System.out.println(e);
+        }
     }
 }
