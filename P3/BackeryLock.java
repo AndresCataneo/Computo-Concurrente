@@ -1,7 +1,6 @@
 package P3;
 
 import java.util.Collections;
-import java.util.concurrent.locks.Lock;
 
 public class BackeryLock{
 
