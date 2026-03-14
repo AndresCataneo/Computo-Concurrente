@@ -9,8 +9,6 @@ import java.util.concurrent.Future;
 import P3.BackeryLock;
 
 public class Main {
-    
-    
 
     public static void main(String[] args) throws InterruptedException, ExecutionException  {
         
@@ -29,20 +27,24 @@ public class Main {
         pool.shutdown();
 
         try{
-            //Utiliaremos un bucle para recorrer la lista de futuros		
-			for (int i = 0; i < futuros.size(); i++) {
+            // Utiliaremos un bucle para recorrer la lista de futuros		
+            for (int i = 0; i < futuros.size(); i++) {
                 //Si la tarea aun no ha terminado obligaremos a esperar a que termine.
-	            while(! futuros.get(i).isDone());
-                //Obtenemos el elemento que 'elimino' de la cola.
-	            Integer result = futuros.get(i).get();
-	            System.out.println("Result: "+result.toString());
+                while( !futuros.get(i).isDone()){
+                }
             }
-		}catch(InterruptedException e) {
-			System.out.println(e);
-		}catch(ExecutionException e){
-            System.out.println(e);
+        }catch(Exception e){
+            System.out.print( e );
         }
 
         System.out.println("El contador llega a: "+ BackeryLock.getContador() );
+        int[] tareas = lock.getConteoTareas();
+        int temp = 0;
+        System.out.println("Los hilos han ejectuado X tareas individualmente");
+        for (int i = 0; i<tareas.length ; i++) {
+            temp += tareas[i];
+            System.out.println("\tHilo "+i+": "+tareas[i]+" tareas");
+        }
+        System.out.println("Que en total son "+temp+" tareas.");
     }
 }

@@ -4,8 +4,10 @@ import java.util.Collections;
 
 public class BackeryLock{
 
-    private int tareasEjecutadas = 0;
     private static int contador = 0;
+
+    /** Arreglo que indica cuantas tareas ha realizado el i-esimo hilo */
+    public static int[] conteoTareas = {0,0,0,0};
 
     /** Arreglo para establecer solicitud de turno */
     volatile boolean[] flag = { false , false , false , false };
@@ -52,20 +54,18 @@ public class BackeryLock{
     }
 
     public void lock(){
-        System.out.println("BEGIN LOCK");
         int i = threadId.get();
-        System.out.println("Este hilo tiene la ID "+i);
 
         flag[i] = true; // Este hilo pide permiso de pasar
         
         label[i] = maximo(label)+1; // Este hilo toma boleto (max+1)
         for (int k=0; k<label.length; k++) { // Este hilo se compara al resto
-            System.out.println("El hilo con que "+i+" se compara tiene ID "+k);
             while( k != i &&  flag[k] && evaluaTupla( k , i ) ){ /* No hace Nada */ }
         }
     }
 
     public static int increment(){
+        conteoTareas[threadId.get()]++;
         return contador++;
     }
 
@@ -73,8 +73,11 @@ public class BackeryLock{
         return contador;
     }
 
+    public int[] getConteoTareas() {
+        return conteoTareas;
+    }
+
     public void unlock(){
-        System.out.println("UNLOCK");
         flag[threadId.get()] = false;
     }
 }
