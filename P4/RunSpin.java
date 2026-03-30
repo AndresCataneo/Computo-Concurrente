@@ -60,8 +60,8 @@ public class RunSpin {
         try {
             lock.lock();
             // Sección crítica 
-            asignacionEnMatriz();
-            imprimirMatriz();
+            //asignacionEnMatriz();
+            //imprimirMatriz();
             
             counter++; 
         } finally {
@@ -82,9 +82,9 @@ public class RunSpin {
         int numberThreads = 4; 
         ExecutorService executor = Executors.newFixedThreadPool(numberThreads);
 
-        Lock lock = new TASLock();
-//      Lock lock = new TTASLock();
-//      Lock lock = new BackoffLock();
+//        Lock lock = new TASLock();
+//     Lock lock = new TTASLock();
+      Lock lock = new BackoffLock();
 //      Lock lock = new MCSLock();
 //      Lock lock = new ALock(numberThreads);
 //      Lock lock = new ReentrantLock();
@@ -94,7 +94,7 @@ public class RunSpin {
         
         long startTime = System.nanoTime();
         
-        for(int i = 0; i < 100; i++) {
+        for(int i = 0; i <1000; i++) {
             futures.add(executor.submit(() -> task(lock))); 
         }
         executor.shutdown();
