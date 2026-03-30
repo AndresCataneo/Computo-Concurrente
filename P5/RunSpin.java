@@ -25,12 +25,12 @@ public class RunSpin {
     
     /**
      * Metodo que llena la matriz compartida de 10x10 asignando a cada celda
-     * un valor entero correspondiente a la suma de sus índices.
+     * la suma de sus índices más el valor actual del contador global.
      */
     public static void asignacionEnMatriz() {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                matriz[i][j] = i + j; 
+                matriz[i][j] = counter + i + j; 
             }
         }
     }
