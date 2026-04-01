@@ -60,8 +60,8 @@ public class RunSpin {
         try {
             lock.lock();
             // Sección crítica 
-            //asignacionEnMatriz();
-            //imprimirMatriz();
+                asignacionEnMatriz();
+                imprimirMatriz();
             
             counter++; 
         } finally {
@@ -79,23 +79,22 @@ public class RunSpin {
     public static void main(String[] args) {
         List<Future<Integer>> futures = new ArrayList<Future<Integer>>();
         
-        int numberThreads = 4; 
+        int numberThreads = 2; 
         ExecutorService executor = Executors.newFixedThreadPool(numberThreads);
-
-//      Lock lock = new TASLock();
+//		CounterAtomic counter = new CounterAtomic(); // Descomentar para probar el contador atomico
+        Lock lock = new TASLock();
 //      Lock lock = new TTASLock();
-        Lock lock = new BackoffLock();
+//      Lock lock = new BackoffLock();
 //      Lock lock = new MCSLock();
 //      Lock lock = new ALock(numberThreads);
 //      Lock lock = new ReentrantLock();
 //      Lock lock = new CLHLock();
         
-        counter = 0;
-        
         long startTime = System.nanoTime();
         
-        for(int i = 0; i <1000; i++) {
+        for(int i = 0; i < 100; i++) {
             futures.add(executor.submit(() -> task(lock))); 
+//			futures.add(executor.submit(() -> counter.increment())); // Descomentar para probar el contador atomico
         }
         executor.shutdown();
         
