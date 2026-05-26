@@ -8,7 +8,7 @@ fn main(){
     for _ in 0..4 {
         let c = Arc::clone(&contador);
         handles.push(thread::spawn(move || {
-            for _ in 0..1_000 {
+            for _ in 0..1_000_000 {
                 let mut num = c.lock().unwrap();
                 *num += 1; 
             }
