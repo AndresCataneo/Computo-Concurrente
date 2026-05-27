@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use rand::Rng;
 use std::sync::{
     atomic::{AtomicU64, Ordering},
     Arc, Mutex,
@@ -104,7 +105,8 @@ fn main() {
         handles.push(thread::spawn(move || {
             for i in 0..100 {
                 //Utilizmos la siguiente linea para definir que accion realizar
-                let op = (thread_id + i) % 3;
+                //let op = (thread_id + i) % 3;
+                let op = rand::thread_rng().gen_range(0..3);
 
                 match op {
                     // transfer
