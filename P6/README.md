@@ -3,6 +3,9 @@
 ## Compilación Y Ejecución
 
 ### Ejercicio 1
+
+Dentro de la carpeta P6Rust:
+
 Compilamos con 
 ```
 rustc race.rs
